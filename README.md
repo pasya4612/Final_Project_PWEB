@@ -49,37 +49,34 @@ Tujuan utama dari pengembangan aplikasi StudySync ini adalah:
 | **Sosial** | Friend & Chat | **Add Friend**, mengelola pertemanan (**Accept/Reject/Remove**), dan **Private Chat** 1-on-1. |
 | **Dashboard** | Metrik Kinerja | Menampilkan statistik **Total Tugas** dan **Completed Tugas**. |
 
-### 2.2 Arsitektur Sistem (Narasi)
+### 2.2 Arsitektur Sistem (Spesifikasi Teknologi)
 
-StudySync dikembangkan menggunakan arsitektur **3-Tier (Tiga Tingkat)**, yang memisahkan tanggung jawab sistem menjadi tiga lapisan utama untuk efisiensi dan pemeliharaan:
+StudySync dikembangkan menggunakan arsitektur **3-Tier (Tiga Tingkat)** berbasis *Native Web Development*. Teknologi yang digunakan berfokus pada kemudahan integrasi dan pemrosesan *server-side*.
 
 #### A. Tingkat Presentasi (Presentation Tier / Frontend)
-Lapisan ini bertanggung jawab atas interaksi pengguna.
-* **Fungsi:** Menampilkan antarmuka web (Dashboard, Daftar Tugas, Chat UI), menerima input dari pengguna (klik tombol, pengisian formulir), dan mengirimkannya ke Tingkat Logika.
-* **Teknologi:** HTML, CSS, JavaScript (Framework/Library Frontend jika digunakan).
+Lapisan ini bertanggung jawab atas semua yang dilihat dan diinteraksi oleh pengguna.
+* **Fungsi:** Menampilkan antarmuka responsif dan menerima input dari pengguna.
+* **Teknologi:** **HTML** (Struktur Konten) dan **CSS** (Styling dan Tampilan).
 
 #### B. Tingkat Logika Bisnis (Business Logic Tier / Backend)
-Lapisan ini adalah inti pemrosesan StudySync.
-* **Fungsi:** Mengelola autentikasi pengguna, menjalankan operasi CRUD Tugas, dan yang terpenting, menjalankan **Logika Klasifikasi Otomatis** dan **Manajemen Sosial**.
+Lapisan ini adalah pusat pemrosesan dan logika StudySync.
+* **Fungsi:** Mengelola autentikasi, memvalidasi data, menjalankan operasi CRUD Tugas/Grup/Chat, dan menjalankan **Logika Klasifikasi Otomatis** tugas.
 * **Spesifikasi Logika Kunci:**
-    * **Klasifikasi Tugas:** Logika ini membandingkan `due_date` tugas dengan *timestamp* sistem untuk menentukan status (`DL < Hari Ini` = Overdue; `DL = Hari Ini` = Today; `DL <= 7 Hari` = Upcoming).
-    * **Manajemen Status:** Mengelola transisi status tugas (*Pending* $\leftrightarrow$ *Completed*) dan memperbarui metrik Dashboard.
-    * **Manajemen Sosial:** Mengelola relasi di tabel pertemanan, memproses status *Accept/Reject*, dan mengelola riwayat pesan Private Chat.
-* **Teknologi:** PHP/Python/Node.js (sesuai implementasi backend).
+    * **Klasifikasi Tugas:** Logika dijalankan oleh **PHP** untuk membandingkan `due_date` tugas dengan *timestamp* sistem, menghasilkan status (Overdue, Today, Upcoming).
+    * **Transfer Data:** Data ditransfer antara frontend dan backend menggunakan format **.json** melalui *request* asinkron.
+* **Teknologi:** **PHP**.
 
 #### C. Tingkat Data (Data Tier / Database)
-Lapisan ini bertanggung jawab untuk penyimpanan data yang persisten.
-* **Fungsi:** Menyimpan data pengguna, semua detail tugas, relasi Study Group, status pertemanan, dan riwayat Private Chat.
-* **Teknologi:** MySQL/PostgreSQL (atau sejenisnya).
+Lapisan ini bertanggung jawab untuk penyimpanan data persisten.
+* **Fungsi:** Menyimpan data pengguna, detail tugas, relasi Study Group, status pertemanan, dan riwayat Private Chat secara terstruktur.
+* **Teknologi:** **MySQL** sebagai sistem manajemen basis data relasional. Pengelolaan dan administrasi database dilakukan menggunakan **phpMyAdmin**.
 
 ### 2.3 Aliran Data Utama (Task Management)
 
 Aliran data dalam StudySync berpusat pada pemrosesan tugas yang dinamis:
-1.  **Input Tugas:** Pengguna memasukkan data tugas baru (Konteks, Deskripsi, DL, Kategori) melalui Tingkat Presentasi.
-2.  **Penyimpanan:** Data dikirim ke Tingkat Logika Bisnis, divalidasi, dan disimpan dalam Tingkat Data (Database).
-3.  **Permintaan Tampilan:** Ketika Dashboard diminta, Tingkat Logika Bisnis mengambil semua tugas pengguna dari Database.
-4.  **Pemrosesan Klasifikasi:** Logika Bisnis menjalankan *query* atau fungsi yang membandingkan `due_date` setiap tugas dengan tanggal saat ini, mengkategorikannya menjadi **Today**, **Upcoming**, atau **Overdue**.
-5.  **Output:** Hasil kategorisasi dan metrik kinerja (Total/Completed) dikirim kembali melalui Tingkat Presentasi ke layar pengguna.
+1.  **Input Tugas:** Pengguna memasukkan data melalui frontend (HTML/CSS).
+2.  **Pemrosesan Backend:** Data diterima oleh PHP, divalidasi, dan disimpan di MySQL.
+3.  **Klasifikasi dan Output:** Ketika data diminta, PHP menjalankan logika klasifikasi DL. Hasil (termasuk status **Today/Upcoming/Overdue**) diformat menjadi **.json** dan dikirim kembali ke frontend untuk ditampilkan.
 
 ---
 
@@ -111,7 +108,7 @@ Aliran data dalam StudySync berpusat pada pemrosesan tugas yang dinamis:
 ## ✅ BAB 4: PENUTUP
 
 ### 4.1 Kesimpulan
-Proyek **StudySync** berhasil dikembangkan sebagai *platform* yang secara efektif menggabungkan manajemen tugas dengan kebutuhan kolaborasi pelajar. Implementasi logika kategorisasi tugas otomatis (Today, Upcoming, Overdue) dan fitur komunikasi terintegrasi (Study Group, Private Chat) telah memenuhi semua tujuan proyek yang ditetapkan. StudySync memberikan nilai tambah yang signifikan sebagai alat pendukung produktivitas akademik.
+Proyek **StudySync** berhasil dikembangkan sebagai *platform* yang secara efektif menggabungkan manajemen tugas dengan kebutuhan kolaborasi pelajar. Dengan menggunakan teknologi **PHP** dan **MySQL**, implementasi logika kategorisasi tugas otomatis (Today, Upcoming, Overdue) dan fitur komunikasi terintegrasi (Study Group, Private Chat) telah memenuhi semua tujuan proyek yang ditetapkan. StudySync memberikan nilai tambah yang signifikan sebagai alat pendukung produktivitas akademik.
 
 ---
 <center>
