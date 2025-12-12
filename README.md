@@ -42,35 +42,44 @@ Tujuan utama dari pengembangan aplikasi StudySync ini adalah:
 
 | Modul | Fitur | Deskripsi Fungsionalitas Rinci |
 | :--- | :--- | :--- |
-| **Autentikasi** | Registrasi & Login | Mendukung pendaftaran akun standar. Login tersedia melalui kredensial biasa atau **Google Account (SSO)**. |
-| **Profil** | Pengaturan Akun | Pengguna dapat mengakses profil untuk mengubah **Nama**, **Email**, dan **Kata Sandi**. |
-| **Task Management**| Tambah Tugas | Memasukkan **Konteks** (judul), **Deskripsi**, **Due Date (DL)**, dan **Kategori** tugas. |
-| | Edit/Delete Tugas | Mengubah semua detail tugas yang ada. Khusus edit, status **Completed** dapat dikembalikan menjadi **Pending**. |
-| | Mark Complete | Menandai tugas sebagai selesai. |
-| **Klasifikasi DL** | Tiga Kategori | Tugas dibagi menjadi: <ul><li>**Today List** (DL hari ini).</li><li>**Upcoming This Week** (DL dalam 7 hari ke depan, bukan hari ini).</li><li>**Overdue** (DL telah terlewat).</li></ul> |
-| **Dashboard** | Metrik Kinerja | Menampilkan statistik real-time: **Total Tugas** dan **Completed Tugas**. |
-| **Study Group** | Group Management | Membuat, Mengedit, dan Menghapus grup diskusi. |
-| **Sosial** | Add Friend | Fitur untuk menambahkan anggota Study Group sebagai teman pribadi. |
-| | Friend List | Mengelola pertemanan dengan opsi **Accept**, **Reject**, dan **Remove** teman. |
-| | Private Chat | Menyediakan fungsi *chatting* 1-on-1 dengan teman yang sudah di-*accept* (mirip WA/Line). |
+| **Autentikasi** | Registrasi & Login | Login standar dan **Login via Google Account (SSO)**. |
+| **Task Management**| Klasifikasi DL | Tugas dibagi otomatis ke: **Today List**, **Upcoming This Week**, dan **Overdue**. |
+| | Edit/Delete Tugas | Mengubah semua detail, termasuk status **Completed** dapat dikembalikan menjadi **Pending**. |
+| **Kolaborasi** | Study Group | Membuat, Mengedit, dan Menghapus grup diskusi. |
+| **Sosial** | Friend & Chat | **Add Friend**, mengelola pertemanan (**Accept/Reject/Remove**), dan **Private Chat** 1-on-1. |
+| **Dashboard** | Metrik Kinerja | Menampilkan statistik **Total Tugas** dan **Completed Tugas**. |
 
-### 2.2 Arsitektur Sistem
+### 2.2 Arsitektur Sistem (Narasi)
 
-StudySync menggunakan arsitektur *Client-Server* dengan logika bisnis terpusat.
+StudySync dikembangkan menggunakan arsitektur **3-Tier (Tiga Tingkat)**, yang memisahkan tanggung jawab sistem menjadi tiga lapisan utama untuk efisiensi dan pemeliharaan:
 
-#### Diagram Konteks (DFD Level 0)
-Diagram ini menunjukkan StudySync sebagai sistem utama yang berinteraksi dengan **Pengguna**.
+#### A. Tingkat Presentasi (Presentation Tier / Frontend)
+Lapisan ini bertanggung jawab atas interaksi pengguna.
+* **Fungsi:** Menampilkan antarmuka web (Dashboard, Daftar Tugas, Chat UI), menerima input dari pengguna (klik tombol, pengisian formulir), dan mengirimkannya ke Tingkat Logika.
+* **Teknologi:** HTML, CSS, JavaScript (Framework/Library Frontend jika digunakan).
 
-> **Aliran Data Kunci:** Data Tugas yang dimasukkan pengguna menjadi input vital, sementara Daftar Tugas yang sudah terkategorisasi dan Status Metrik Dashboard menjadi output utama.
+#### B. Tingkat Logika Bisnis (Business Logic Tier / Backend)
+Lapisan ini adalah inti pemrosesan StudySync.
+* **Fungsi:** Mengelola autentikasi pengguna, menjalankan operasi CRUD Tugas, dan yang terpenting, menjalankan **Logika Klasifikasi Otomatis** dan **Manajemen Sosial**.
+* **Spesifikasi Logika Kunci:**
+    * **Klasifikasi Tugas:** Logika ini membandingkan `due_date` tugas dengan *timestamp* sistem untuk menentukan status (`DL < Hari Ini` = Overdue; `DL = Hari Ini` = Today; `DL <= 7 Hari` = Upcoming).
+    * **Manajemen Status:** Mengelola transisi status tugas (*Pending* $\leftrightarrow$ *Completed*) dan memperbarui metrik Dashboard.
+    * **Manajemen Sosial:** Mengelola relasi di tabel pertemanan, memproses status *Accept/Reject*, dan mengelola riwayat pesan Private Chat.
+* **Teknologi:** PHP/Python/Node.js (sesuai implementasi backend).
 
-#### Logika Alir Data Tugas (DFD Level 1: Task Management)
-Proses ini menunjukkan bagaimana tugas yang baru ditambahkan diproses oleh sistem:
+#### C. Tingkat Data (Data Tier / Database)
+Lapisan ini bertanggung jawab untuk penyimpanan data yang persisten.
+* **Fungsi:** Menyimpan data pengguna, semua detail tugas, relasi Study Group, status pertemanan, dan riwayat Private Chat.
+* **Teknologi:** MySQL/PostgreSQL (atau sejenisnya).
 
+### 2.3 Aliran Data Utama (Task Management)
 
-
-1.  **Pengelolaan Tugas:** Menerima **Add/Edit/Delete Task** dan **Mark Complete** dari pengguna, memperbarui $D1$ (Data Tugas).
-2.  **Kategorisasi Otomatis:** Sistem membaca $D1$ dan membandingkan `Due Date` dengan tanggal saat ini, menghasilkan klasifikasi status (*Today*, *Upcoming*, *Overdue*).
-3.  **Update Dashboard:** Perubahan status tugas (*Add* atau *Complete*) memicu pembaruan hitungan Total dan Completed Tasks.
+Aliran data dalam StudySync berpusat pada pemrosesan tugas yang dinamis:
+1.  **Input Tugas:** Pengguna memasukkan data tugas baru (Konteks, Deskripsi, DL, Kategori) melalui Tingkat Presentasi.
+2.  **Penyimpanan:** Data dikirim ke Tingkat Logika Bisnis, divalidasi, dan disimpan dalam Tingkat Data (Database).
+3.  **Permintaan Tampilan:** Ketika Dashboard diminta, Tingkat Logika Bisnis mengambil semua tugas pengguna dari Database.
+4.  **Pemrosesan Klasifikasi:** Logika Bisnis menjalankan *query* atau fungsi yang membandingkan `due_date` setiap tugas dengan tanggal saat ini, mengkategorikannya menjadi **Today**, **Upcoming**, atau **Overdue**.
+5.  **Output:** Hasil kategorisasi dan metrik kinerja (Total/Completed) dikirim kembali melalui Tingkat Presentasi ke layar pengguna.
 
 ---
 
@@ -78,8 +87,8 @@ Proses ini menunjukkan bagaimana tugas yang baru ditambahkan diproses oleh siste
 
 ### 1. Memulai Akun dan Profil
 
-* **Akses Cepat:** Gunakan **"Login dengan Google Account"** saat pertama kali mengakses untuk melewati proses registrasi manual.
-* **Pengaturan Akun:** Di menu **"Profile"**, Anda dapat mengganti **Nama**, **Email**, dan menjaga keamanan akun dengan mengganti **Kata Sandi**.
+* **Akses Cepat:** Gunakan **"Login dengan Google Account"** saat pertama kali mengakses.
+* **Pengaturan Akun:** Di menu **"Profile"**, Anda dapat mengganti **Nama**, **Email**, dan **Kata Sandi**.
 
 ### 2. Mengelola Tugas
 
@@ -92,9 +101,9 @@ Proses ini menunjukkan bagaimana tugas yang baru ditambahkan diproses oleh siste
 
 ### 3. Berkolaborasi
 
-* **Membuat Grup:** Buka **"Study Group"** $\rightarrow$ **"+ Buat Grup Baru"**. Anda bisa mengatur detail grup dan mengundang anggota.
+* **Membuat Grup:** Buka **"Study Group"** $\rightarrow$ **"+ Buat Grup Baru"**.
 * **Membangun Jaringan:** Di Study Group, Anda dapat memilih anggota dan **"Add Friend"**.
-* **Mengelola Pertemanan:** Di **"Friend List"**, Anda bisa **Accept** atau **Reject** permintaan masuk, atau **Remove** teman yang sudah ada.
+* **Mengelola Pertemanan:** Di **"Friend List"**, Anda bisa **Accept** atau **Reject** permintaan masuk, atau **Remove** teman.
 * **Chat Pribadi:** Pilih nama teman di **"Friend List"** untuk memulai **Private Chat** 1-on-1.
 
 ---
