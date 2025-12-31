@@ -1,116 +1,123 @@
-<h1 align="center">LAPORAN PROYEK PENGEMBANGAN WEB: STUDYSYNC</h1>
+JUDUL PROYEK
 
-<p align="center">
-  <img src="https://via.placeholder.com/300x150?text=STUDYSYNC+LOGO" width="300" alt="Logo StudySync">
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Status-Final+Project-brightgreen" alt="Status">
-  <img src="https://img.shields.io/badge/Technology-Web+Application-blue" alt="Technology">
-</p>
-
-## JUDUL PROYEK:
-**Rancang Bangun Aplikasi Manajemen Tugas dan Kolaborasi Belajar "StudySync" Berbasis Web**
+Rancang Bangun Aplikasi Manajemen Tugas dan Rangkuman Belajar “StudySync” Berbasis Web
 
 <br>
+TIM PENGEMBANG
 
-## TIM PENGEMBANG:
-**[Nama Pengembang 1]** [5025xxxxxx] [Backend & Logika Sistem]<br>
-**[Nama Pengembang 2]** [5025xxxxxx] [Frontend & User Interface]
+Ary Pasya Fernanda (5025241053) — Frontend Development & Testing
+Lucky Himawan Prasetya (5025241147) — Backend Development, Database Management & API Integration
 
----
+🔗 Link Aplikasi: STUDYSYNC
 
-## 📚 BAB 1: PENDAHULUAN
+📚 BAB 1: PENDAHULUAN
+1.1 Latar Belakang
 
-### 1.1 Latar Belakang
-Dunia pendidikan modern menuntut pelajar untuk mengelola banyak tugas dan tenggat waktu secara simultan. Kurangnya sistem terpusat untuk melacak kewajiban ini seringkali mengakibatkan tugas terlambat dikumpulkan (*overdue*) atau terlewat. Studi menunjukkan bahwa pelajar sering kesulitan memprioritaskan tugas tanpa adanya klasifikasi waktu yang jelas.
+Tantangan utama yang dihadapi pelajar adalah mengelola tugas akademik yang jumlahnya banyak serta menjaga efisiensi dalam proses belajar. Banyak pelajar mengalami kesulitan dalam melacak tenggat waktu (due date) dan menentukan prioritas tugas, yang sering berujung pada tugas terlewat (overdue).
 
-Selain masalah manajemen waktu, proses diskusi dan belajar kelompok seringkali tersebar di berbagai *platform* komunikasi eksternal, yang tidak terintegrasi dengan *to-do list* mereka. **StudySync** hadir sebagai solusi terpadu untuk mengatasi tantangan tersebut, menggabungkan fitur manajemen tugas yang cerdas, seperti penandaan status otomatis (**Today, Upcoming, Overdue**), dengan alat kolaborasi sosial, seperti **Study Group** dan **Private Chat**, yang terintegrasi langsung dalam konteks akademik pengguna. Dengan demikian, StudySync bertujuan meningkatkan efisiensi belajar dan memfasilitasi komunikasi yang terfokus.
+Selain itu, proses merangkum materi pembelajaran seringkali terpisah dari sistem manajemen tugas. Hal ini menyebabkan catatan belajar tersebar dan tidak terorganisir dengan baik. StudySync hadir sebagai solusi terpadu dengan menggabungkan manajemen tugas berbasis waktu dan alat pencatatan digital (New Notes) yang berfokus pada rangkuman akademik. Dengan StudySync, tugas diorganisir berdasarkan prioritas waktu dan rangkuman belajar disimpan secara terpusat dalam satu platform.
 
-### 1.2 Tujuan Proyek
-Tujuan utama dari pengembangan aplikasi StudySync ini adalah:
-1.  **Sistem Tugas Intuitif:** Merancang dan mengimplementasikan sistem manajemen tugas yang intuitif, mencakup fitur penambahan, pengeditan (termasuk mengubah status *Completed* ke *Pending*), penyelesaian (*Mark Complete*), dan penandaan status otomatis (**Today, Upcoming, Overdue**).
-2.  **Modul Kolaborasi Penuh:** Mengembangkan modul kolaborasi yang memungkinkan pengguna membuat **Study Group** untuk diskusi, mengelola **Friend List** (Accept, Reject, Remove), dan melakukan **Private Chat** 1-on-1.
-3.  **Visualisasi Progres:** Menyediakan *dashboard* visual untuk melacak statistik progres belajar pengguna, yaitu **Total Tugas** yang dimasukkan dan **Tugas Selesai** (*Completed*).
-4.  **Autentikasi Fleksibel:** Mengimplementasikan sistem autentikasi yang aman, mencakup registrasi/login standar serta opsi login melalui **Google Account (SSO)** untuk kemudahan akses.
+1.2 Tujuan Proyek
 
----
+Tujuan dari pengembangan aplikasi StudySync adalah:
 
-## 🛠️ BAB 2: ANALISIS DAN PERANCANGAN SISTEM
+Sistem Tugas Intuitif
+Mengimplementasikan sistem manajemen tugas (CRUD) dengan penandaan status otomatis (Today, Upcoming, Overdue) serta status fleksibel.
 
-### 2.1 Fitur Utama (*Functional Requirements*)
+Modul Pencatatan (New Notes)
+Mengembangkan modul New Notes untuk membuat, menyimpan, dan mengelola rangkuman akademik secara terpusat.
 
-| Modul | Fitur | Deskripsi Fungsionalitas Rinci |
-| :--- | :--- | :--- |
-| **Autentikasi** | Registrasi & Login | Login standar dan **Login via Google Account (SSO)**. |
-| **Task Management**| Klasifikasi DL | Tugas dibagi otomatis ke: **Today List**, **Upcoming This Week**, dan **Overdue**. |
-| | Edit/Delete Tugas | Mengubah semua detail, termasuk status **Completed** dapat dikembalikan menjadi **Pending**. |
-| **Kolaborasi** | Study Group | Membuat, Mengedit, dan Menghapus grup diskusi. |
-| **Sosial** | Friend & Chat | **Add Friend**, mengelola pertemanan (**Accept/Reject/Remove**), dan **Private Chat** 1-on-1. |
-| **Dashboard** | Metrik Kinerja | Menampilkan statistik **Total Tugas** dan **Completed Tugas**. |
+Visualisasi Progres
+Menyediakan Dashboard untuk melacak statistik kinerja pengguna (Total Tugas dan Tugas Selesai).
 
-### 2.2 Arsitektur Sistem (Spesifikasi Teknologi)
+Manajemen Grup Diskusi
+Menyediakan modul Study Group sebagai wadah organisasi topik diskusi tanpa fitur private chat 1-on-1.
 
-StudySync dikembangkan menggunakan arsitektur **3-Tier (Tiga Tingkat)** berbasis *Native Web Development*. Teknologi yang digunakan berfokus pada kemudahan integrasi dan pemrosesan *server-side*.
+Autentikasi Fleksibel
+Mengimplementasikan login standar serta Login melalui Google Account (SSO).
 
-#### A. Tingkat Presentasi (Presentation Tier / Frontend)
-Lapisan ini bertanggung jawab atas semua yang dilihat dan diinteraksi oleh pengguna.
-* **Fungsi:** Menampilkan antarmuka responsif dan menerima input dari pengguna.
-* **Teknologi:** **HTML** (Struktur Konten) dan **CSS** (Styling dan Tampilan).
+🛠️ BAB 2: IMPLEMENTASI TEKNIS
+2.1 Frontend & Backend Development
 
-#### B. Tingkat Logika Bisnis (Business Logic Tier / Backend)
-Lapisan ini adalah pusat pemrosesan dan logika StudySync.
-* **Fungsi:** Mengelola autentikasi, memvalidasi data, menjalankan operasi CRUD Tugas/Grup/Chat, dan menjalankan **Logika Klasifikasi Otomatis** tugas.
-* **Spesifikasi Logika Kunci:**
-    * **Klasifikasi Tugas:** Logika dijalankan oleh **PHP** untuk membandingkan `due_date` tugas dengan *timestamp* sistem, menghasilkan status (Overdue, Today, Upcoming).
-    * **Transfer Data:** Data ditransfer antara frontend dan backend menggunakan format **.json** melalui *request* asinkron.
-* **Teknologi:** **PHP**.
+StudySync dibangun menggunakan arsitektur 3-Tier Architecture dengan pendekatan native web development.
 
-#### C. Tingkat Data (Data Tier / Database)
-Lapisan ini bertanggung jawab untuk penyimpanan data persisten.
-* **Fungsi:** Menyimpan data pengguna, detail tugas, relasi Study Group, status pertemanan, dan riwayat Private Chat secara terstruktur.
-* **Teknologi:** **MySQL** sebagai sistem manajemen basis data relasional. Pengelolaan dan administrasi database dilakukan menggunakan **phpMyAdmin**.
+Tingkat Sistem	Teknologi	Implementasi Kunci
+Presentasi (Frontend)	HTML, CSS, Bootstrap	Antarmuka responsif dan estetis menggunakan Bootstrap
+Logika Bisnis (Backend)	PHP & JavaScript	Logika klasifikasi tugas, CRUD Tasks & Notes
+Transfer Data	JSON	Komunikasi data antara client dan server
+2.2 Database Implementation
 
-### 2.3 Aliran Data Utama (Task Management)
+Database digunakan untuk menyimpan seluruh data persisten sistem.
 
-Aliran data dalam StudySync berpusat pada pemrosesan tugas yang dinamis:
-1.  **Input Tugas:** Pengguna memasukkan data melalui frontend (HTML/CSS).
-2.  **Pemrosesan Backend:** Data diterima oleh PHP, divalidasi, dan disimpan di MySQL.
-3.  **Klasifikasi dan Output:** Ketika data diminta, PHP menjalankan logika klasifikasi DL. Hasil (termasuk status **Today/Upcoming/Overdue**) diformat menjadi **.json** dan dikirim kembali ke frontend untuk ditampilkan.
+Teknologi: MySQL (dikelola menggunakan phpMyAdmin)
 
----
+Data yang Disimpan:
 
-## 🚀 BAB 3: PANDUAN PENGGUNA (USER GUIDE)
+Data Tugas
 
-### 1. Memulai Akun dan Profil
+Data Notes (Rangkuman)
 
-* **Akses Cepat:** Gunakan **"Login dengan Google Account"** saat pertama kali mengakses.
-* **Pengaturan Akun:** Di menu **"Profile"**, Anda dapat mengganti **Nama**, **Email**, dan **Kata Sandi**.
+Data Study Group
 
-### 2. Mengelola Tugas
+Data Akun Pengguna
 
-| Fungsionalitas | Cara Penggunaan |
-| :--- | :--- |
-| **Menambah Tugas** | Klik **"+ Add Task"**. Pastikan DL diisi. Tugas akan otomatis masuk ke kategori waktu. |
-| **Mengubah Status** | Klik tombol **"Mark Complete"**. Di Dashboard, **Completed Tasks** akan bertambah. |
-| **Revisi Tugas** | Gunakan **"Edit"**. Anda dapat mengubah *semua* detail atau mengubah tugas yang sudah *Completed* kembali menjadi *Pending*. |
-| **Melacak DL** | Prioritaskan **Today List**. Tugas yang terlewat akan otomatis muncul di **Overdue**. |
+Logika PHP bertanggung jawab menjaga relasi dan integritas data dalam seluruh operasi Task Management dan New Notes.
 
-### 3. Berkolaborasi
+2.3 Integrasi API
 
-* **Membuat Grup:** Buka **"Study Group"** $\rightarrow$ **"+ Buat Grup Baru"**.
-* **Membangun Jaringan:** Di Study Group, Anda dapat memilih anggota dan **"Add Friend"**.
-* **Mengelola Pertemanan:** Di **"Friend List"**, Anda bisa **Accept** atau **Reject** permintaan masuk, atau **Remove** teman.
-* **Chat Pribadi:** Pilih nama teman di **"Friend List"** untuk memulai **Private Chat** 1-on-1.
+API: Google Account Single Sign-On (SSO)
 
----
+Fungsi:
+Memungkinkan pengguna login menggunakan akun Google tanpa registrasi manual, sehingga meningkatkan kemudahan akses dan pengalaman pengguna.
 
-## ✅ BAB 4: PENUTUP
+Implementasi:
+Sinkronisasi autentikasi dilakukan di sisi backend.
 
-### 4.1 Kesimpulan
-Proyek **StudySync** berhasil dikembangkan sebagai *platform* yang secara efektif menggabungkan manajemen tugas dengan kebutuhan kolaborasi pelajar. Dengan menggunakan teknologi **PHP** dan **MySQL**, implementasi logika kategorisasi tugas otomatis (Today, Upcoming, Overdue) dan fitur komunikasi terintegrasi (Study Group, Private Chat) telah memenuhi semua tujuan proyek yang ditetapkan. StudySync memberikan nilai tambah yang signifikan sebagai alat pendukung produktivitas akademik.
+2.4 Pengujian (Testing)
 
----
-<center>
-Copyright © 2025 StudySync.
-</center>
+Pengujian dilakukan menggunakan metode Black Box Testing.
+
+Fitur	Skenario Pengujian	Hasil yang Diharapkan	Status
+Klasifikasi Otomatis	DL tugas lewat 1 hari	Masuk kategori Overdue	✅ Berhasil
+New Notes (CRUD)	Create, Edit, Delete catatan	Data tersimpan dan terhapus normal	✅ Berhasil
+Edit Status Tugas	Completed → Pending	Statistik Dashboard diperbarui	✅ Berhasil
+Login Google SSO	Login via akun Google	Sesi login berhasil	✅ Berhasil
+2.5 Diagram Sistem
+
+Logika inti di backend (PHP) memproses data tugas berdasarkan waktu sistem untuk menentukan status (Today / Upcoming / Overdue).
+Data Notes diproses melalui alur CRUD terpisah dan disimpan sebagai konten akademik terpusat. Seluruh data disimpan di database MySQL.
+
+🚀 BAB 3: PANDUAN PENGGUNA (USER GUIDE)
+3.1 Mengelola Tugas (Task Management)
+
+Tambah Tugas
+Klik "+ Add Task", sistem otomatis mengklasifikasikan tugas berdasarkan DL.
+
+Status Fleksibel
+Gunakan "Mark Complete" untuk menyelesaikan tugas dan "Edit" untuk mengubah kembali ke Pending.
+
+Lacak Progres
+Dashboard menampilkan statistik tugas secara real-time.
+
+3.2 Membuat Rangkuman (New Notes)
+
+Akses menu "New Notes"
+
+Buat rangkuman atau catatan penting lalu simpan
+
+Catatan dapat diedit atau dihapus kapan saja
+
+3.3 Study Group
+
+Masuk ke menu "Study Group" untuk membuat dan mengelola grup diskusi berdasarkan topik tertentu (tanpa fitur chat pribadi).
+
+👨‍💻 BAB 4: PEMBAGIAN JOBDESK
+Nama	NRP	Tanggung Jawab	Kontribusi Teknis
+Lucky Himawan Prasetya	5025241147	Backend & Database	PHP Logic, CRUD Tasks & Notes, MySQL, Google SSO, JS Async
+Ary Pasya Fernanda	5025241053	Frontend & Testing	UI (CSS & Bootstrap), Functional Testing
+✅ BAB 5: PENUTUP
+5.1 Kesimpulan
+
+Aplikasi StudySync berhasil dikembangkan sebagai platform manajemen tugas dan rangkuman belajar berbasis web yang terintegrasi. Dengan dukungan teknologi PHP, MySQL, dan Bootstrap, StudySync mampu membantu pengguna mengelola tugas akademik secara efisien, menyimpan rangkuman belajar terpusat, serta memantau progres belajar melalui dashboard yang informatif.
+
+<p align="center"> © 2025 StudySync </p>
